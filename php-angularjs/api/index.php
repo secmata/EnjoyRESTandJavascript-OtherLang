@@ -6,6 +6,7 @@ $app = new Slim();
 $app->get('/users', 'getUsers');
 $app->get('/users/:id', 'getUser');
 $app->post('/add_user', 'addUser');
+$app->post('/login', 'loginUser');
 $app->put('/users/:id', 'updateUser');
 $app->delete('/users/:id', 'deleteUser');
 
@@ -79,18 +80,36 @@ function updateUser($id) {
 }
 
 function deleteUser($id) {
-	$sql = "DELETE FROM users WHERE id=".$id;
+	$sql = "DELETE FROM users WHERE id=:id";
 	try {
 		$db = getConnection();
-		$stmt = $db->query($sql);  
-		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
-		$db = null;
-		echo json_encode($wines);
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		getUsers();
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
+function loginUser(){
+$request = Slim::getInstance()->request();
+$user = json_decode($request->getBody());
+$pas=md5($user->password);
+$sql = "select id,username from login where username=:username and  password=:password";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("username", $user->username);
+		$stmt->bindParam("password",$pas);
+		$stmt->execute();
+		$usern=$stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($usern); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
 
+}
 function getConnection() {
 	$dbhost="127.0.0.1";
 	$dbuser="usr_ebankdo";
