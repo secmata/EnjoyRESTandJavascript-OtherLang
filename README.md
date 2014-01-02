@@ -2,6 +2,9 @@ EnjoyRESTandJavascript-OtherLang
 ========================
 Enjoying javascript and other programming languages.
 
+    Username:admin
+    Password:admin
+
 
 Description
 -------------------
