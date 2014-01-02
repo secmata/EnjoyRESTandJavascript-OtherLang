@@ -12,3 +12,4 @@ Project 01: php-angularjs
 -------------------
 
 - Technology: PHP, AngularJS, JavaScript, REST, HTML, MySQL DB, Apache HTTP.
+- Folder: /EnjoyRESTandJavascript-OtherLang/php-angularjs/*
